@@ -20,28 +20,38 @@ Stand: Wix-Details stammen aus der Wix-Hilfe. Menünamen können je nach Editor 
 
 **Empfehlung:** A als Hauptweg, dazu optional B auf derselben Seite. Dann sehen alle das Spiel, und wer es speichern will, öffnet es im eigenen Fenster.
 
-## Schritt 0: Spiel auf GitHub Pages veröffentlichen (für A und B)
-1. Auf github.com das Repo `SFPoldi/verliebte-zahlen` öffnen, **Settings**, **Pages**.
-2. Unter "Build and deployment" bei **Source** "Deploy from a branch" wählen, Branch **main**, Ordner **/ (root)**, **Save**.
-3. Nach 1 bis 2 Minuten steht oben die Adresse: `https://sfpoldi.github.io/verliebte-zahlen/`
-4. Im Browser öffnen und prüfen, dass das Spiel startet.
+## Schritt 0: Spiel unter spiele.diemathefluesterin.net veröffentlichen (für A und B)
+Ziel-Adresse: `https://spiele.diemathefluesterin.net/verliebte-zahlen/`. Spätere Spiele liegen daneben, z. B. `.../neues-spiel/`.
+Die Dateien liegen bei GitHub Pages, die Adresse gehört zu deiner Domain. So hängt es zusammen:
+- Das Repo `SFPoldi/sfpoldi.github.io` ist die "Hauptseite" (Übersicht aller Spiele) und trägt die Domain `spiele.diemathefluesterin.net`.
+- Jedes Spiel-Repo (z. B. `verliebte-zahlen`) erscheint automatisch als Unterpfad dieser Domain.
+
+Reihenfolge:
+1. **Repo anlegen:** Auf github.com ein **öffentliches** Repo namens exakt `sfpoldi.github.io` anlegen. Inhalt (Übersichtsseite) liefert Claude.
+2. **Pages einschalten, in beiden Repos** (`sfpoldi.github.io` und `verliebte-zahlen`): Settings, Pages, Source "Deploy from a branch", Branch `main`, Ordner `/ (root)`, Save.
+3. **DNS bei Wix:** Domains, bei `diemathefluesterin.net` **DNS-Einträge verwalten**, bei **CNAME** neuen Eintrag: Host `spiele`, Wert `sfpoldi.github.io` (ohne Repo-Namen, so verlangt es GitHub). Änderungen brauchen Minuten bis Stunden.
+4. **Domain bei GitHub eintragen:** Nur im Repo `sfpoldi.github.io`: Settings, Pages, **Custom domain** `spiele.diemathefluesterin.net`, speichern, sobald möglich **Enforce HTTPS** anhaken. Die Datei `CNAME` im Repo liegt schon bereit.
+5. **Testen:** `https://spiele.diemathefluesterin.net/` zeigt die Übersicht, `https://spiele.diemathefluesterin.net/verliebte-zahlen/` das Spiel.
 
 Das Repo ist öffentlich, deshalb ist Pages kostenlos. Der Code ist dann für alle lesbar. Er enthält keine Zugangsdaten.
+
+**Wichtig:** Die Adresse gehört fest zum gespeicherten Rekord. Ändert sich die Adresse später, sind Namen und Rekorde der Kinder weg, die das Spiel gespeichert haben.
 
 ## Weg A: Button auf der Wix-Seite
 1. Seite bearbeiten, **Hinzufügen**, **Button**.
 2. Beschriftung z. B. "Spiel starten".
-3. Link: **Webadresse**, `https://sfpoldi.github.io/verliebte-zahlen/` eintragen, **In neuem Tab öffnen** aktivieren.
+3. Link: **Webadresse**, `https://spiele.diemathefluesterin.net/verliebte-zahlen/` eintragen, **In neuem Tab öffnen** aktivieren.
 4. Veröffentlichen.
 
 Kindern auf dem Handy kann man erklären: Im Spiel Teilen/Menü, "Zum Home-Bildschirm". Dann ist es eine App.
 
 ## Weg B: Einbetten per Adresse
 1. Seite bearbeiten, **Hinzufügen**, **Einbetten** (Embed Code), **HTML-iFrame** wählen.
-2. **Webadresse eingeben**, `https://sfpoldi.github.io/verliebte-zahlen/` eintragen.
+2. **Webadresse eingeben**, `https://spiele.diemathefluesterin.net/verliebte-zahlen/` eintragen.
 3. Größe festlegen:
    - Desktop: Breite 480 bis 520 px (das Spiel zentriert sich selbst), Höhe etwa 800 px.
    - Handy: Handy-Ansicht des Editors öffnen und das Element einzeln anpassen, Breite volle Bildschirmbreite, Höhe etwa 720 bis 780 px. Wix-Elemente haben getrennte Größen für Desktop und Handy.
+   Das Spiel läuft auf einer Subdomain derselben Domain wie deine Wix-Seite. Dadurch speichert Safari vermutlich auch im Rahmen dauerhaft (nicht verifiziert, bitte auf einem echten iPhone testen).
 4. Direkt darunter einen Textlink oder Button wie bei Weg A setzen, damit Safari-Nutzer speichern können.
 5. Auf einem echten Handy testen. Bildet sich unten eine zweite Scrollleiste, die Höhe ein paar Pixel reduzieren oder erhöhen.
 
@@ -53,15 +63,6 @@ Hinweis aus der Wix-Hilfe: Seiten, die das Einbetten verbieten, erscheinen nicht
 3. Größe wie bei Weg B.
 
 Bei Updates den Code neu einfügen. Den "Im eigenen Fenster öffnen"-Link füllt `PLAY_URL` in `index.html`. Ohne GitHub Pages zeigt er ins Leere, dann ist Weg C nicht zu empfehlen.
-
-## Optional: schöne Adresse spiel.diemathefluesterin.net
-Statt `sfpoldi.github.io/...` kann das Spiel unter einer eigenen Unterdomain laufen.
-1. GitHub: Settings, Pages, **Custom domain**: `spiel.diemathefluesterin.net`, speichern. Haken **Enforce HTTPS** setzen, sobald er auswählbar ist.
-2. Wix: **Domains**, bei `diemathefluesterin.net` **DNS-Einträge verwalten**, bei **CNAME** neuen Eintrag: Host `spiel`, Wert `sfpoldi.github.io` (ohne Repo-Namen, so verlangt es GitHub).
-3. In `index.html` die Konstante `PLAY_URL` auf `https://spiel.diemathefluesterin.net/` ändern, `python3 tools/build-wix-embed.py` ausführen, committen.
-4. Wartezeit bis zur Gültigkeit der DNS-Änderung: Minuten bis Stunden.
-
-Ist die Domain nicht bei Wix registriert, den CNAME beim jeweiligen Anbieter eintragen.
 
 ## Testliste nach dem Einbau
 - [ ] iPhone (Safari): Seite lädt, Spiel startet, Button öffnet eigenes Fenster
