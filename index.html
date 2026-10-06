@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Verliebte Zahlen">
+<meta name="theme-color" content="#0B567B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Verliebte Zahlen</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+/* Markenfarben: Gold #FFC82B, Blau #0B567B, Creme #FBFAF1. Bewusst nur ein helles Design (Kinder-App). */
+:root {
+  color-scheme: light;
+  --gold: #FFC82B;
+  --blue: #0B567B;
+  --cream: #FBFAF1;
+  --blue-line: rgba(11, 86, 123, 0.14);
+  --blue-gone: rgba(11, 86, 123, 0.22);
+  --gold-soft: rgba(255, 200, 43, 0.35);
+  --ink: #0B3A52;
+  --ink-soft: #4d6f80;
+  --good: #1c7a4a;
+  --bad: #b83a2e;
+  --font: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+}
+html, body { height: 100%; }
+body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--font); -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+[hidden] { display: none !important; }
+button { font-family: var(--font); }
+
+.app { height: 100%; max-width: 520px; margin: 0 auto; box-sizing: border-box; display: flex; flex-direction: column; padding-inline: 16px; }
+
+header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px 10px; }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; color: var(--blue); min-width: 0; }
+.brand svg { width: 28px; height: 28px; flex: none; }
+.who { text-align: right; font-size: 14px; line-height: 1.25; min-width: 0; }
+.who b { color: var(--blue); }
+.level { display: inline-block; margin-top: 2px; padding: 2px 10px; border-radius: 99px; background: var(--gold); color: var(--blue); font-size: 12px; font-weight: 600; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-bottom: 10px; }
+.stat { background: var(--blue); color: var(--cream); border-radius: 14px; padding: 6px 4px 7px; text-align: center; }
+.stat .label { display: block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+.stat .value { display: block; font-size: 24px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat.score .value { color: var(--gold); }
+
+.msg { min-height: 22px; text-align: center; font-size: 15px; font-weight: 600; color: var(--blue); padding-bottom: 6px; }
+.msg.good { color: var(--good); } .msg.bad { color: var(--bad); }
+
+.board-wrap { flex: 1; overflow-y: auto; min-height: 0; padding-bottom: 12px; }
+.board { display: grid; grid-template-columns: repeat(9, 1fr); border: 3px solid var(--blue); border-radius: 12px; overflow: hidden; background: #fff; }
+.cell { aspect-ratio: 1; border: 0; margin: 0; padding: 0; background: transparent; color: var(--blue); font-weight: 700; font-size: clamp(22px, 7vw, 32px); border-right: 1px solid var(--blue-line); border-bottom: 1px solid var(--blue-line); cursor: pointer; touch-action: manipulation; font-variant-numeric: tabular-nums; }
+.cell:nth-child(9n) { border-right: 0; }
+.cell:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+.cell.gone { color: var(--blue-gone); cursor: default; font-weight: 500; }
+.cell.empty { cursor: default; }
+.cell.sel { background: var(--blue); color: var(--gold); border-radius: 10px; box-shadow: inset 0 0 0 3px var(--gold); }
+.cell.hint { background: var(--gold); color: var(--blue); border-radius: 10px; animation: glow 1s ease-in-out infinite alternate; }
+.cell.bad { animation: shake .3s; }
+.cell.pop { animation: pop .35s ease-out; }
+@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+@keyframes pop { from { transform: scale(1.3); background: var(--gold-soft); } to { transform: scale(1); } }
+@keyframes glow { to { box-shadow: 0 0 0 4px var(--gold-soft); } }
+
+footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding-block: 10px 14px; border-top: 2px solid var(--gold); }
+.tool { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 4px; border: 2px solid var(--blue); border-radius: 16px; background: var(--cream); color: var(--blue); font-size: 13px; font-weight: 600; cursor: pointer; position: relative; touch-action: manipulation; }
+.tool:disabled { opacity: .4; cursor: default; }
+.tool:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.tool .glyph { font-size: 24px; font-weight: 700; line-height: 1.1; }
+.tool .note { font-size: 11px; font-weight: 500; color: var(--ink-soft); }
+.tool.primary { background: var(--gold); border-color: var(--gold); }
+.tool.primary .note { color: var(--blue); }
+.tool.nudge { animation: nudge .6s ease-in-out 3; box-shadow: 0 0 0 4px var(--blue); }
+@keyframes nudge { 50% { transform: translateY(-5px); } }
+.count { position: absolute; top: -9px; right: 8px; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 11px; background: var(--blue); color: var(--gold); font-size: 13px; font-weight: 700; line-height: 22px; text-align: center; }
+
+.sheet { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; background: rgba(11, 58, 82, .55); z-index: 10; overflow-y: auto; }
+.card { background: var(--cream); border-radius: 24px; padding: 22px; max-width: 360px; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; text-align: center; border: 3px solid var(--gold); }
+.card h2 { margin: 0; font-size: 26px; font-weight: 700; color: var(--blue); text-wrap: balance; }
+.card p { margin: 0; color: var(--ink); line-height: 1.45; }
+.card .big { font-size: 56px; font-weight: 700; line-height: 1; color: var(--blue); }
+.card label { font-size: 13px; color: var(--ink-soft); text-align: left; }
+.name { width: 100%; box-sizing: border-box; padding: 11px 14px; border: 2px solid var(--blue); border-radius: 14px; font: 600 18px var(--font); color: var(--blue); background: #fff; }
+.name:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.levels { display: grid; gap: 8px; }
+.lvl { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 8px; text-align: left; padding: 10px 14px; border: 2px solid var(--blue); border-radius: 14px; background: #fff; color: var(--blue); cursor: pointer; }
+.lvl:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.lvl:hover, .lvl.on { background: var(--gold); border-color: var(--gold); }
+.lvl .t { font-size: 18px; font-weight: 700; }
+.lvl .d { grid-column: 1; font-size: 12px; color: var(--ink-soft); }
+.lvl:hover .d, .lvl.on .d { color: var(--blue); }
+.lvl .b { grid-row: 1 / span 2; grid-column: 2; font-size: 12px; font-weight: 600; text-align: right; }
+.row { display: flex; gap: 8px; }
+.row .btn { flex: 1; }
+.btn { padding: 12px; border-radius: 14px; border: 2px solid var(--blue); background: var(--cream); color: var(--blue); font-size: 16px; font-weight: 600; cursor: pointer; }
+.btn.primary { background: var(--gold); border-color: var(--gold); }
+.btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.how { text-align: left; font-size: 14px; line-height: 1.45; margin: 0; padding-left: 18px; }
+.how li + li { margin-top: 4px; }
+@media (prefers-reduced-motion: reduce) { .cell.bad, .cell.pop, .cell.hint, .tool.nudge { animation: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 29C6 21 2 15.5 2 10.5 2 6.4 5.2 4 8.6 4c3 0 5.4 1.6 7.4 4.4C18 5.6 20.4 4 23.4 4 26.8 4 30 6.4 30 10.5 30 15.5 26 21 16 29z" fill="#FFC82B" stroke="#0B567B" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span>Verliebte Zahlen</span>
+    </div>
+    <div class="who">Hallo, <b id="playerName">Superstar</b><br><span class="level" id="levelBadge">Mittel</span></div>
+  </header>
+
+  <div class="stats">
+    <div class="stat score"><span class="label">Punkte</span><span class="value" id="score">0</span></div>
+    <div class="stat"><span class="label">Rekord</span><span class="value" id="best">0</span></div>
+    <div class="stat"><span class="label">Mehr Zahlen</span><span class="value" id="addsLeft">4</span></div>
+  </div>
+  <div class="msg" id="msg" role="status" aria-live="polite"></div>
+
+  <div class="board-wrap" id="boardWrap"><div class="board" id="board"></div></div>
+
+  <footer>
+    <button class="tool" id="btnNew" type="button"><span class="glyph">↺</span>Neu</button>
+    <button class="tool" id="btnUndo" type="button"><span class="glyph">↶</span>Zurück</button>
+    <button class="tool" id="btnHint" type="button"><span class="glyph">?</span>Tipp<span class="note" id="hintNote">−5 Punkte</span></button>
+    <button class="tool primary" id="btnAdd" type="button"><span class="glyph">+</span>Mehr Zahlen<span class="count" id="addBadge">4</span></button>
+  </footer>
+</div>
+
+<div class="sheet" id="sheet" hidden><div class="card" id="card"></div></div>
+
+<script>
+(() => {
+  const COLS = 9;
+
+  // ---- Schwierigkeit: Menge, "Mehr Zahlen"-Chancen und Verteilung. Immer Ziffern 1 bis 9. ----
+  // dist "easy":   Partner liegen paarweise nebeneinander (viele Treffer am Start)
+  // dist "random": reiner Zufall
+  // dist "hard":   Zufall, dann so lange umgewürfelt, bis höchstens maxPairs Treffer übrig sind
+  const LEVELS = {
+    leicht:  { name: "Leicht",  desc: "3 Zeilen, viele Paare liegen nah beieinander", count: 27, adds: 6, dist: "easy" },
+    mittel:  { name: "Mittel",  desc: "4 Zeilen, bunt gemischt",                       count: 36, adds: 4, dist: "random" },
+    schwer:  { name: "Schwer",  desc: "6 Zeilen, Paare sind gut versteckt",            count: 54, adds: 3, dist: "hard", maxPairs: 24 }
+  };
+
+  // ---- Punkte ----
+  const PTS_PAIR = 10;    // jedes gefundene Paar
+  const PTS_ROW = 25;     // Bonus für eine komplett geleerte Zeile
+  const PTS_CLEAR = 100;  // Bonus: ganzes Feld geleert
+  const HINT_COST = 5;    // Abzug pro Tipp (kostenlos, wenn nur "Mehr Zahlen" hilft)
+
+  const KEY_GAME = "verliebte-zahlen.game.v1";
+  const KEY_PROFILE = "verliebte-zahlen.profile.v1";
+
+  let s;                       // aktuelle Runde
+  let level = "mittel";
+  let profile = { name: "Superstar", best: { leicht: 0, mittel: 0, schwer: 0 } };
+  let sel = null, hint = null, msgTimer;
+
+  const $ = id => document.getElementById(id);
+  const tryStore = fn => { try { return fn(); } catch (e) { return null; } };
+
+  // ---- Speichern (localStorage: bleibt auf diesem Gerät, wird nirgends hin gesendet) ----
+  function saveProfile() { tryStore(() => localStorage.setItem(KEY_PROFILE, JSON.stringify(profile))); }
+  function saveGame() { tryStore(() => localStorage.setItem(KEY_GAME, JSON.stringify({ s, level }))); }
+  function loadAll() {
+    try {
+      const p = JSON.parse(localStorage.getItem(KEY_PROFILE) || "null");
+      if (p && typeof p.name === "string") profile = { name: p.name || "Superstar", best: Object.assign({ leicht: 0, mittel: 0, schwer: 0 }, p.best) };
+    } catch (e) {}
+    try {
+      const g = JSON.parse(localStorage.getItem(KEY_GAME) || "null");
+      if (g && g.s && Array.isArray(g.s.cells) && LEVELS[g.level]) { s = g.s; level = g.level; return true; }
+    } catch (e) {}
+    return false;
+  }
+
+  // ---- Regeln ----
+  const matches = (a, b) => a === b || a + b === 10;
+
+  // Anzahl gelöschter Felder dazwischen, oder -1 wenn blockiert. Gelöschte Felder sind negativ.
+  function gapBetween(cells, i, j) {
+    if (i > j) [i, j] = [j, i];
+    const free = (step) => {
+      let gap = 0;
+      for (let k = i + step; k < j; k += step) { if (cells[k] > 0) return -1; gap++; }
+      return gap;
+    };
+    const opts = [free(1)];                      // Lesereihenfolge, inkl. Zeilenumbruch
+    const dr = Math.floor(j / COLS) - Math.floor(i / COLS), dc = (j % COLS) - (i % COLS);
+    if (dc === 0) opts.push(free(COLS));                                           // senkrecht
+    if (dr > 0 && Math.abs(dc) === dr) opts.push(free(dc > 0 ? COLS + 1 : COLS - 1)); // diagonal
+    const ok = opts.filter(g => g >= 0);
+    return ok.length ? Math.min(...ok) : -1;
+  }
+  const isPair = (c, i, j) => i !== j && c[i] > 0 && c[j] > 0 && matches(c[i], c[j]) && gapBetween(c, i, j) >= 0;
+
+  function findPair(c) {
+    for (let i = 0; i < c.length; i++) if (c[i] > 0)
+      for (let j = i + 1; j < c.length; j++) if (c[j] > 0 && isPair(c, i, j)) return [i, j];
+    return null;
+  }
+  function countPairs(c) {
+    let n = 0;
+    for (let i = 0; i < c.length; i++) if (c[i] > 0)
+      for (let j = i + 1; j < c.length; j++) if (c[j] > 0 && isPair(c, i, j)) n++;
+    return n;
+  }
+
+  // ---- Feld erzeugen ----
+  const rnd = () => 1 + Math.floor(Math.random() * 9);
+
+  function makeCells(cfg) {
+    let c;
+    if (cfg.dist === "easy") {
+      const pairs = [];
+      for (let k = 0; k < Math.floor(cfg.count / 2); k++) {
+        const a = rnd();
+        pairs.push(Math.random() < 0.5 ? [a, a] : [a, 10 - a]);
+      }
+      for (let k = pairs.length - 1; k > 0; k--) { const r = Math.floor(Math.random() * (k + 1)); [pairs[k], pairs[r]] = [pairs[r], pairs[k]]; }
+      c = pairs.flat();
+      while (c.length < cfg.count) c.push(rnd());
+    } else {
+      c = Array.from({ length: cfg.count }, rnd);
+      if (cfg.dist === "hard") {
+        let n = countPairs(c);
+        for (let t = 0; t < 4000 && n > cfg.maxPairs; t++) {
+          const k = Math.floor(Math.random() * c.length), old = c[k];
+          c[k] = rnd();
+          const m = countPairs(c);
+          if (m <= n) n = m; else c[k] = old;
+        }
+      }
+    }
+    return c;
+  }
+
+  function newGame() {
+    const cfg = LEVELS[level];
+    let c;
+    do { c = makeCells(cfg); } while (countPairs(c) < 3);
+    s = { cells: c, adds: cfg.adds, earned: 0, penalty: 0, history: [], over: null };
+    sel = null; hint = null; say("");
+  }
+
+  const score = () => Math.max(0, s.earned - s.penalty);
+
+  // ---- Züge ----
+  function snapshot() {
+    s.history.push({ cells: s.cells.slice(), adds: s.adds, earned: s.earned });
+    if (s.history.length > 300) s.history.shift();
+  }
+
+  function removeEmptyRows() {
+    let rows = 0;
+    const c = s.cells;
+    for (let r = Math.ceil(c.length / COLS) - 1; r >= 0; r--) {
+      const a = r * COLS, b = Math.min(a + COLS, c.length);
+      let empty = true;
+      for (let k = a; k < b; k++) if (c[k] > 0) { empty = false; break; }
+      if (empty) { c.splice(a, b - a); rows++; }
+    }
+    return rows;
+  }
+
+  function playPair(i, j) {
+    const a = s.cells[i], b = s.cells[j];
+    snapshot();
+    s.cells[i] = -a; s.cells[j] = -b;
+    const rows = removeEmptyRows();
+    s.earned += PTS_PAIR + rows * PTS_ROW;
+    hint = null;
+    if (!s.cells.some(v => v > 0)) { s.earned += PTS_CLEAR; s.over = "win"; }
+    say(a === b ? `${a} und ${b}: Zwillinge!` : `${a} + ${b} = 10: verliebt!`, "good");
+    afterMove();
+    render(rows ? [] : [i, j]);
+  }
+
+  function addNumbers() {
+    if (s.over || s.adds <= 0) return;
+    snapshot();
+    while (s.cells.length && !(s.cells[s.cells.length - 1] > 0)) s.cells.pop();
+    s.cells.push(...s.cells.filter(v => v > 0));
+    s.adds--;
+    sel = null; hint = null; say("");
+    afterMove();
+    render();
+    const w = $("boardWrap");
+    w.scrollTo({ top: w.scrollHeight, behavior: "smooth" });
+  }
+
+  function useHint() {
+    if (s.over) return;
+    if (hint) { render(); return; }               // gleicher Tipp bleibt kostenlos sichtbar
+    const p = findPair(s.cells);
+    if (p) {
+      hint = p; sel = null;
+      s.penalty += HINT_COST;
+      say(`Tipp: −${HINT_COST} Punkte`);
+      render();
+      const el = $("board").children[p[0]];
+      if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    } else if (s.adds > 0) {                      // kein Paar mehr: auf "Mehr Zahlen" zeigen, kostenlos
+      say("Kein Paar mehr. Drück auf Mehr Zahlen!");
+      const b = $("btnAdd");
+      b.classList.remove("nudge"); void b.offsetWidth; b.classList.add("nudge");
+    } else {
+      s.over = "stuck"; afterMove(); render();
+    }
+    saveGame();
+  }
+
+  function undo() {
+    const h = s.history.pop();
+    if (!h) return;
+    s.cells = h.cells; s.adds = h.adds; s.earned = h.earned; s.over = null; // Tipp-Abzüge bleiben
+    sel = null; hint = null; say("");
+    render(); saveGame();
+  }
+
+  function afterMove() {
+    if (!s.over && s.adds === 0 && !findPair(s.cells)) s.over = "stuck";
+    if (s.over) {
+      s.newRecord = score() > (profile.best[level] || 0);
+      if (s.newRecord) { profile.best[level] = score(); saveProfile(); }
+    }
+    saveGame();
+  }
+
+  function tap(idx) {
+    if (s.over || !(s.cells[idx] > 0)) return;
+    if (sel === null) { sel = idx; render(); return; }
+    if (sel === idx) { sel = null; render(); return; }
+    if (isPair(s.cells, sel, idx)) { const a = sel; sel = null; playPair(a, idx); return; }
+    const x = s.cells[sel], y = s.cells[idx], prev = sel;
+    if (matches(x, y)) say("Das passt, aber es liegt noch eine Zahl dazwischen.", "bad");
+    else say(`${x} + ${y} = ${x + y}. Das sind nicht 10.`, "bad");
+    sel = idx; render();
+    [prev, idx].forEach(k => { const el = $("board").children[k]; if (el) el.classList.add("bad"); });
+  }
+
+  // ---- Anzeige ----
+  function say(text, kind) {
+    const m = $("msg");
+    m.textContent = text;
+    m.className = "msg" + (kind ? " " + kind : "");
+    clearTimeout(msgTimer);
+    if (text) msgTimer = setTimeout(() => { m.textContent = ""; m.className = "msg"; }, 3500);
+  }
+
+  function render(popped = []) {
+    const board = $("board");
+    const rows = Math.ceil(Math.max(s.cells.length, COLS) / COLS);
+    const frag = document.createDocumentFragment();
+    for (let k = 0; k < rows * COLS; k++) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "cell";
+      const v = s.cells[k];
+      if (k >= s.cells.length) {
+        b.classList.add("empty"); b.tabIndex = -1; b.disabled = true;
+      } else if (v > 0) {
+        b.textContent = v; b.dataset.i = k; b.setAttribute("aria-label", "Zahl " + v);
+        if (k === sel) b.classList.add("sel");
+        if (hint && hint.includes(k)) b.classList.add("hint");
+        if (popped.includes(k)) b.classList.add("pop");
+      } else {
+        b.classList.add("gone"); b.textContent = -v; b.tabIndex = -1; b.setAttribute("aria-label", "weg");
+        if (popped.includes(k)) b.classList.add("pop");
+      }
+      frag.appendChild(b);
+    }
+    board.replaceChildren(frag);
+
+    $("score").textContent = score();
+    $("best").textContent = Math.max(profile.best[level] || 0, score());
+    $("addsLeft").textContent = s.adds;
+    $("addBadge").textContent = s.adds;
+    $("levelBadge").textContent = LEVELS[level].name;
+    $("playerName").textContent = profile.name;
+    $("btnAdd").disabled = s.adds <= 0 || !!s.over;
+    $("btnUndo").disabled = !s.history.length;
+    $("btnHint").disabled = !!s.over;
+    $("hintNote").textContent = hint ? "aktiv" : "−" + HINT_COST + " Punkte";
+
+    if (s.over) showEnd(); else if (!$("sheet").dataset.keep) $("sheet").hidden = true;
+  }
+
+  function esc(t) { return t.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+  const closeSheet = () => { $("sheet").hidden = true; delete $("sheet").dataset.keep; };
+  function openSheet(html) { $("card").innerHTML = html; $("sheet").dataset.keep = "1"; $("sheet").hidden = false; }
+
+  function showEnd() {
+    const won = s.over === "win";
+    $("card").innerHTML =
+      `<h2>${won ? "Geschafft, " + esc(profile.name) + "!" : "Keine Paare mehr"}</h2>` +
+      `<div class="big">${score()}</div><p>Punkte</p>` +
+      `<p>${won ? "Du hast alle Zahlen weggebracht." : "Alle Mehr-Zahlen sind verbraucht und es gibt kein Paar mehr."}` +
+      `${s.newRecord ? "<br><b>Neuer Rekord auf " + LEVELS[level].name + "!</b>" : ""}</p>` +
+      `<div class="row">${won ? "" : '<button class="btn" id="endUndo" type="button">Zurück</button>'}<button class="btn primary" id="endNew" type="button">Neue Runde</button></div>`;
+    $("sheet").hidden = false;
+    $("endNew").onclick = showStart;
+    const u = $("endUndo"); if (u) u.onclick = () => { closeSheet(); undo(); };
+  }
+
+  // Startbildschirm: Name und Stufe wählen
+  function showStart(first) {
+    const canResume = s && !s.over && s.history.length > 0;
+    openSheet(
+      `<h2>Verliebte Zahlen</h2>` +
+      `<p>Finde Zahlen, die <b>zusammen 10</b> ergeben (3 + 7) oder <b>gleich</b> sind (4 und 4).</p>` +
+      `<label for="nameInput">Dein Vorname</label>` +
+      `<input class="name" id="nameInput" type="text" maxlength="20" autocomplete="off" value="${esc(profile.name)}">` +
+      `<div class="levels">` +
+      Object.entries(LEVELS).map(([k, c]) =>
+        `<button class="lvl${k === level ? " on" : ""}" type="button" data-level="${k}"><span class="t">${c.name}</span>` +
+        `<span class="b">Rekord ${profile.best[k] || 0}</span><span class="d">${c.desc}</span></button>`).join("") +
+      `</div>` +
+      `<ul class="how"><li>Die Zahlen müssen nebeneinander liegen: waagerecht, senkrecht oder schräg. Leere Felder dazwischen sind ok.</li>` +
+      `<li>Zeilenende und nächster Zeilenanfang zählen auch als Nachbarn.</li>` +
+      `<li>Nichts mehr zu finden? Mit <b>Mehr Zahlen</b> kommen die übrigen Zahlen nochmal dazu.</li></ul>` +
+      (canResume ? `<button class="btn" id="resume" type="button">Runde weiterspielen</button>` : ""));
+    const input = $("nameInput");
+    const commitName = () => { profile.name = input.value.trim() || "Superstar"; saveProfile(); };
+    document.querySelectorAll(".lvl").forEach(b => b.onclick = () => {
+      commitName(); level = b.dataset.level; closeSheet(); newGame(); render(); saveGame();
+    });
+    const r = $("resume"); if (r) r.onclick = () => { commitName(); closeSheet(); render(); };
+  }
+
+  // ---- Start ----
+  $("board").addEventListener("click", e => {
+    const b = e.target.closest(".cell");
+    if (b && b.dataset.i !== undefined) tap(Number(b.dataset.i));
+  });
+  $("board").addEventListener("animationend", e => e.target.classList.remove("bad", "pop"));
+  $("btnAdd").onclick = addNumbers;
+  $("btnAdd").addEventListener("animationend", e => e.currentTarget.classList.remove("nudge"));
+  $("btnHint").onclick = useHint;
+  $("btnUndo").onclick = undo;
+  $("btnNew").onclick = () => showStart();
+
+  if (loadAll()) { render(); }
+  else { newGame(); render(); showStart(); }
+})();
+</script>
+<script>
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
