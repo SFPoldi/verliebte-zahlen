@@ -12,8 +12,9 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Verliebte Zahlen</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
 <style>
+/* Schrift Fredoka (SIL Open Font License, siehe fonts/OFL.txt), lokal eingebunden: keine Anfrage an Google. */
+@font-face { font-family: "Fredoka"; font-weight: 300 700; font-style: normal; font-display: swap; src: url(fonts/fredoka-latin.woff2) format("woff2"); }
 /* Markenfarben: Gold #FFC82B, Blau #0B567B, Creme #FBFAF1. Bewusst nur ein helles Design (Kinder-App). */
 :root {
   color-scheme: light;
@@ -52,6 +53,7 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .msg { min-height: 22px; text-align: center; font-size: 15px; font-weight: 600; color: var(--blue); padding-bottom: 6px; }
 .msg.good { color: var(--good); } .msg.bad { color: var(--bad); }
 
+.full { display: block; text-align: center; font-size: 13px; font-weight: 600; color: var(--blue); padding-bottom: 6px; }
 .board-wrap { flex: 1; overflow-y: auto; min-height: 0; padding-bottom: 12px; }
 .board { display: grid; grid-template-columns: repeat(9, 1fr); border: 3px solid var(--blue); border-radius: 12px; overflow: hidden; background: #fff; }
 .cell { aspect-ratio: 1; border: 0; margin: 0; padding: 0; background: transparent; color: var(--blue); font-weight: 700; font-size: clamp(22px, 7vw, 32px); border-right: 1px solid var(--blue-line); border-bottom: 1px solid var(--blue-line); cursor: pointer; touch-action: manipulation; font-variant-numeric: tabular-nums; }
@@ -122,6 +124,7 @@ footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding
   </div>
   <div class="msg" id="msg" role="status" aria-live="polite"></div>
 
+  <a class="full" id="fullLink" href="#" target="_blank" rel="noopener" hidden>Im eigenen Fenster öffnen (Rekorde bleiben gespeichert)</a>
   <div class="board-wrap" id="boardWrap"><div class="board" id="board"></div></div>
 
   <footer>
@@ -153,6 +156,9 @@ footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding
   const PTS_ROW = 25;     // Bonus für eine komplett geleerte Zeile
   const PTS_CLEAR = 100;  // Bonus: ganzes Feld geleert
   const HINT_COST = 5;    // Abzug pro Tipp (kostenlos, wenn nur "Mehr Zahlen" hilft)
+
+  // Adresse der Vollbild-Version. Wird nur gebraucht, wenn das Spiel in eine fremde Seite (z. B. Wix) eingebettet ist.
+  const PLAY_URL = "https://sfpoldi.github.io/verliebte-zahlen/";
 
   const KEY_GAME = "verliebte-zahlen.game.v1";
   const KEY_PROFILE = "verliebte-zahlen.profile.v1";
@@ -445,6 +451,11 @@ footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding
   $("btnHint").onclick = useHint;
   $("btnUndo").onclick = undo;
   $("btnNew").onclick = () => showStart();
+
+  // Eingebettet in einem Rahmen? Dann Link zur Vollbild-Version zeigen (Safari speichert dort Daten nur flüchtig).
+  let embedded = false;
+  try { embedded = window.self !== window.top; } catch (e) { embedded = true; }
+  if (embedded) { const f = $("fullLink"); f.href = PLAY_URL; f.hidden = false; }
 
   if (loadAll()) { render(); }
   else { newGame(); render(); showStart(); }

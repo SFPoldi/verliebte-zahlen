@@ -38,18 +38,17 @@ Vorname (Standard "Superstar"), Rekorde und die laufende Runde liegen im `localS
 Es wird nichts an einen Server gesendet und kein Cookie gesetzt. Die Daten gelten pro Gerät und Browser
 und gehen verloren, wenn Website-Daten gelöscht werden.
 
-## Hosting auf diemathefluesterin.net
-Ordner als Unterverzeichnis hochladen, z. B. `/verliebte-zahlen/`, Aufruf `.../verliebte-zahlen/index.html`.
-- Next.js: Inhalt nach `public/verliebte-zahlen/` kopieren. Kurz-URL per `redirects()` in `next.config.js` (Redirect, kein Rewrite, wegen relativer Pfade).
-- Wix (Übergang): "Code einbetten" mit dem Inhalt von `index.html`. Im iFrame kein Installieren, kein Offline-Modus, Speicherung je nach Browser eingeschränkt.
-- Als Link/Button auf der Wix-Seite zur gehosteten Version ist besser als Einbetten.
+## Hosting
+- **Wix (aktuelle Seite):** siehe [docs/WIX.md](docs/WIX.md), mit Schritt-für-Schritt-Anleitung für Button, Einbetten und Code-Einfügen.
+- **Neue Next.js-Seite:** siehe [docs/UEBERGABE.md](docs/UEBERGABE.md), für die Agentur.
+- Fertige Einzeldatei zum Einfügen in Wix: `wix/embed.html` (neu erzeugen mit `python3 tools/build-wix-embed.py`).
 
 ## Installieren
-Android (Chrome): Menü, "App installieren". iOS (Safari): Teilen, "Zum Home-Bildschirm".
+Android (Chrome): Menü, "App installieren". iOS (Safari): Teilen, "Zum Home-Bildschirm". Nur im eigenen Fenster, nicht eingebettet.
 
 ## Updates
-Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v1`) hochzählen.
+Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v2`) hochzählen.
 
 ## Design
-Markenfarben: Gold `#FFC82B`, Blau `#0B567B`, Creme `#FBFAF1`. Schrift: Fredoka (Google Fonts, Platzhalter,
-bitte durch die Hausschrift ersetzen, falls es eine gibt).
+Markenfarben: Gold `#FFC82B`, Blau `#0B567B`, Creme `#FBFAF1`. Schrift: Fredoka (SIL Open Font License), lokal eingebunden,
+keine Anfrage an Google. Platzhalter, bitte durch die Hausschrift ersetzen, falls es eine gibt.
