@@ -147,9 +147,9 @@ footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding
   // dist "random": reiner Zufall
   // dist "hard":   Zufall, dann so lange umgewürfelt, bis höchstens maxPairs Treffer übrig sind
   const LEVELS = {
-    leicht:  { name: "Leicht",  desc: "3 Zeilen, viele Paare liegen nah beieinander", count: 27, adds: 6, dist: "easy" },
+    leicht:  { name: "Leicht",  desc: "3 Zeilen, viele Paare liegen nah beieinander", count: 27, adds: 4, dist: "easy" },
     mittel:  { name: "Mittel",  desc: "4 Zeilen, bunt gemischt",                       count: 36, adds: 4, dist: "random" },
-    schwer:  { name: "Schwer",  desc: "6 Zeilen, Paare sind gut versteckt",            count: 54, adds: 3, dist: "hard", maxPairs: 24 }
+    schwer:  { name: "Schwer",  desc: "6 Zeilen, Paare sind gut versteckt",            count: 54, adds: 4, dist: "hard", maxPairs: 24 }
   };
 
   // ---- Punkte ----

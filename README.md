@@ -11,13 +11,13 @@ Reine Web-App, ein HTML-File, kein Build, keine Werbung, keine Server-Anbindung.
 - Das Spiel zeigt beim Fehlversuch die Summe ("3 + 5 = 8. Das sind nicht 10.").
 
 ## Stufen
-Immer Ziffern 1 bis 9. Die Stufen unterscheiden sich in Menge, "Mehr Zahlen"-Chancen und Verteilung.
+Immer Ziffern 1 bis 9 und immer 4x "Mehr Zahlen" pro Runde. Die Stufen unterscheiden sich in Menge und Verteilung.
 
 | Stufe | Zahlen | Zeilen | Mehr Zahlen | Verteilung |
 |---|---|---|---|---|
-| Leicht | 27 | 3 | 6 | Partner liegen paarweise nebeneinander |
+| Leicht | 27 | 3 | 4 | Partner liegen paarweise nebeneinander |
 | Mittel | 36 | 4 | 4 | reiner Zufall |
-| Schwer | 54 | 6 | 3 | Zufall, dann so lange umgewürfelt, bis höchstens 24 Paare sichtbar sind |
+| Schwer | 54 | 6 | 4 | Zufall, dann so lange umgewürfelt, bis höchstens 24 Paare sichtbar sind |
 
 Werte stehen als Konstanten (`LEVELS`) oben im Script in `index.html`.
 
@@ -47,7 +47,7 @@ und gehen verloren, wenn Website-Daten gelöscht werden.
 Android (Chrome): Menü, "App installieren". iOS (Safari): Teilen, "Zum Home-Bildschirm". Nur im eigenen Fenster, nicht eingebettet.
 
 ## Updates
-Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v6`) hochzählen.
+Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v7`) hochzählen.
 
 ## Design
 Markenfarben: Gold `#FFC82B`, Blau `#0B567B`, Creme `#FBFAF1`.

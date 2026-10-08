@@ -1,5 +1,5 @@
 // Offline-Cache: App-Dateien beim Installieren laden, Schriften beim ersten Abruf nachladen.
-const CACHE = "verliebte-zahlen-v6";
+const CACHE = "verliebte-zahlen-v7";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./fonts/baloo2-latin.woff2", "./img/logo-kopf.png", "./img/logo.png", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

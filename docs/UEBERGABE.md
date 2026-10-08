@@ -41,7 +41,7 @@ img/logo.png   img/logo-kopf.png
 - Farben: Variablen oben im `<style>` (`--gold`, `--blue`, `--cream`).
 - Schwierigkeit und Punkte: Konstanten `LEVELS`, `PTS_*`, `HINT_COST` im Script.
 - Schrift: `@font-face` im `<style>`. Eine andere Hausschrift als `.woff2` in `fonts/` legen und dort eintragen. Lizenz prüfen.
-- Nach jeder Änderung in `sw.js` die Version (`verliebte-zahlen-v6`) hochzählen und neue Dateien in die Liste `FILES` aufnehmen, sonst laden installierte Apps die alte Fassung.
+- Nach jeder Änderung in `sw.js` die Version (`verliebte-zahlen-v7`) hochzählen und neue Dateien in die Liste `FILES` aufnehmen, sonst laden installierte Apps die alte Fassung.
 
 ## Adresse und gespeicherte Daten
 Das Spiel läuft aktuell unter `https://spiele.diemathefluesterin.net/verliebte-zahlen/`. Gespeicherte Daten (Name, Rekorde) hängen an dieser **Adresse** (genauer: an der Domain). Zieht das Spiel auf eine andere Domain oder Subdomain um, gehen sie verloren. Bitte die endgültige Adresse **vor** dem Livegang mit der Fachseite abstimmen. Bei einem Umzug die Konstante `PLAY_URL` in `index.html` anpassen.
