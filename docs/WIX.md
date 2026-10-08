@@ -20,6 +20,9 @@ Stand: Wix-Details stammen aus der Wix-Hilfe. Menünamen können je nach Editor 
 
 **Empfehlung:** A als Hauptweg, dazu optional B auf derselben Seite. Dann sehen alle das Spiel, und wer es speichern will, öffnet es im eigenen Fenster.
 
+## Testen ohne Domain
+Vor der Veröffentlichung läuft das Spiel direkt unter `https://sfpoldi.github.io/verliebte-zahlen/` (Pages in beiden Repos eingeschaltet, keine Domain eingetragen, bei Wix nichts einstellen). Diesen Link kannst du zum Ausprobieren weitergeben.
+
 ## Schritt 0: Spiel unter spiele.diemathefluesterin.net veröffentlichen (für A und B)
 Ziel-Adresse: `https://spiele.diemathefluesterin.net/verliebte-zahlen/`. Spätere Spiele liegen daneben, z. B. `.../neues-spiel/`.
 Die Dateien liegen bei GitHub Pages, die Adresse gehört zu deiner Domain. So hängt es zusammen:
@@ -30,7 +33,7 @@ Reihenfolge:
 1. **Repo anlegen:** Auf github.com ein **öffentliches** Repo namens exakt `sfpoldi.github.io` anlegen. Inhalt (Übersichtsseite) liefert Claude.
 2. **Pages einschalten, in beiden Repos** (`sfpoldi.github.io` und `verliebte-zahlen`): Settings, Pages, Source "Deploy from a branch", Branch `main`, Ordner `/ (root)`, Save.
 3. **DNS bei Wix:** Domains, bei `diemathefluesterin.net` **DNS-Einträge verwalten**, bei **CNAME** neuen Eintrag: Host `spiele`, Wert `sfpoldi.github.io` (ohne Repo-Namen, so verlangt es GitHub). Änderungen brauchen Minuten bis Stunden.
-4. **Domain bei GitHub eintragen:** Nur im Repo `sfpoldi.github.io`: Settings, Pages, **Custom domain** `spiele.diemathefluesterin.net`, speichern, sobald möglich **Enforce HTTPS** anhaken. Die Datei `CNAME` im Repo liegt schon bereit.
+4. **Domain bei GitHub eintragen:** Nur im Repo `sfpoldi.github.io`: Settings, Pages, **Custom domain** `spiele.diemathefluesterin.net`, speichern, sobald möglich **Enforce HTTPS** anhaken. GitHub legt dabei die Datei `CNAME` im Repo selbst an. **Erst tun, wenn der DNS-Eintrag aus Schritt 3 gesetzt ist**, sonst leitet GitHub alle Seiten auf eine noch nicht erreichbare Adresse um.
 5. **Testen:** `https://spiele.diemathefluesterin.net/` zeigt die Übersicht, `https://spiele.diemathefluesterin.net/verliebte-zahlen/` das Spiel.
 
 Das Repo ist öffentlich, deshalb ist Pages kostenlos. Der Code ist dann für alle lesbar. Er enthält keine Zugangsdaten.
