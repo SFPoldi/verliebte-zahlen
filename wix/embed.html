@@ -121,7 +121,7 @@ footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding
   <div class="stats">
     <div class="stat score"><span class="label">Punkte</span><span class="value" id="score">0</span></div>
     <div class="stat"><span class="label">Rekord</span><span class="value" id="best">0</span></div>
-    <div class="stat"><span class="label">Mehr Zahlen</span><span class="value" id="addsLeft">4</span></div>
+    <div class="stat"><span class="label">Mehr Zahlen</span><span class="value" id="addsLeft">×4</span></div>
   </div>
   <div class="msg" id="msg" role="status" aria-live="polite"></div>
 
@@ -387,7 +387,7 @@ footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding
 
     $("score").textContent = score();
     $("best").textContent = Math.max(profile.best[level] || 0, score());
-    $("addsLeft").textContent = s.adds;
+    $("addsLeft").textContent = "×" + s.adds;
     $("addBadge").textContent = "×" + s.adds;
     $("btnAdd").setAttribute("aria-label", "Mehr Zahlen, noch " + s.adds + " mal");
     $("levelBadge").textContent = LEVELS[level].name;

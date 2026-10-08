@@ -47,7 +47,7 @@ und gehen verloren, wenn Website-Daten gelöscht werden.
 Android (Chrome): Menü, "App installieren". iOS (Safari): Teilen, "Zum Home-Bildschirm". Nur im eigenen Fenster, nicht eingebettet.
 
 ## Updates
-Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v5`) hochzählen.
+Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v6`) hochzählen.
 
 ## Design
 Markenfarben: Gold `#FFC82B`, Blau `#0B567B`, Creme `#FBFAF1`.
