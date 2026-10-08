@@ -8,8 +8,8 @@ t = re.sub(r'<link rel="(manifest|icon|apple-touch-icon)"[^>]*>\n', "", t)
 t = re.sub(r'<meta name="(apple-mobile-web-app-[a-z-]+|mobile-web-app-capable)"[^>]*>\n', "", t)
 t = re.sub(r'<script>\nif \("serviceWorker".*?</script>\n', "", t, flags=re.S)
 import base64
-font = base64.b64encode((root / "fonts" / "nunito-latin.woff2").read_bytes()).decode()
-t = t.replace("url(fonts/nunito-latin.woff2)", "url(data:font/woff2;base64," + font + ")")
+font = base64.b64encode((root / "fonts" / "baloo2-latin.woff2").read_bytes()).decode()
+t = t.replace("url(fonts/baloo2-latin.woff2)", "url(data:font/woff2;base64," + font + ")")
 for name in ("logo-kopf", "logo"):
     data = base64.b64encode((root / "img" / (name + ".png")).read_bytes()).decode()
     t = t.replace('src="img/' + name + '.png"', 'src="data:image/png;base64,' + data + '"')

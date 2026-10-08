@@ -13,9 +13,9 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Verliebte Zahlen</title>
 <style>
-/* Schrift Nunito (SIL Open Font License, siehe fonts/OFL.txt), lokal eingebunden: keine Anfrage an Google.
-   Ziffern ähneln der Schulschrift: 4 oben geschlossen, 1 mit Haken, 7 ohne Querstrich. */
-@font-face { font-family: "Nunito"; font-weight: 400 800; font-style: normal; font-display: swap; src: url(fonts/nunito-latin.woff2) format("woff2"); }
+/* Schrift Baloo 2 (SIL Open Font License, siehe fonts/OFL.txt), lokal eingebunden: keine Anfrage an Google.
+   Ziffern: 4 oben geschlossen, 1 mit Haken. */
+@font-face { font-family: "Baloo 2"; font-weight: 400 800; font-style: normal; font-display: swap; src: url(fonts/baloo2-latin.woff2) format("woff2"); }
 /* Markenfarben: Gold #FFC82B, Blau #0B567B, Creme #FBFAF1. Bewusst nur ein helles Design (Kinder-App). */
 :root {
   color-scheme: light;
@@ -29,7 +29,7 @@
   --ink-soft: #4d6f80;
   --good: #1c7a4a;
   --bad: #b83a2e;
-  --font: "Nunito", "Trebuchet MS", system-ui, sans-serif;
+  --font: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
 }
 html, body { height: 100%; }
 body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--font); -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
@@ -57,7 +57,7 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .full { display: block; text-align: center; font-size: 13px; font-weight: 600; color: var(--blue); padding-bottom: 6px; }
 .board-wrap { flex: 1; overflow-y: auto; min-height: 0; padding-bottom: 12px; }
 .board { display: grid; grid-template-columns: repeat(9, 1fr); border: 3px solid var(--blue); border-radius: 12px; overflow: hidden; background: #fff; }
-.cell { aspect-ratio: 1; border: 0; margin: 0; padding: 0; background: transparent; color: var(--blue); font-weight: 800; font-size: clamp(22px, 7vw, 32px); border-right: 1px solid var(--blue-line); border-bottom: 1px solid var(--blue-line); cursor: pointer; touch-action: manipulation; font-variant-numeric: tabular-nums; }
+.cell { aspect-ratio: 1; min-width: 0; min-height: 0; line-height: 1; border: 0; margin: 0; padding: 0; background: transparent; color: var(--blue); font-weight: 800; font-size: clamp(22px, 7vw, 32px); border-right: 1px solid var(--blue-line); border-bottom: 1px solid var(--blue-line); cursor: pointer; touch-action: manipulation; font-variant-numeric: tabular-nums; }
 .cell:nth-child(9n) { border-right: 0; }
 .cell:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
 .cell.gone { color: var(--blue-gone); cursor: default; font-weight: 500; }

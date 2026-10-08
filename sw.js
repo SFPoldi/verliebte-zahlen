@@ -1,6 +1,6 @@
 // Offline-Cache: App-Dateien beim Installieren laden, Schriften beim ersten Abruf nachladen.
-const CACHE = "verliebte-zahlen-v3";
-const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./fonts/nunito-latin.woff2", "./img/logo-kopf.png", "./img/logo.png", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
+const CACHE = "verliebte-zahlen-v4";
+const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./fonts/baloo2-latin.woff2", "./img/logo-kopf.png", "./img/logo.png", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.filter(f => f !== "./").map(f => new Request(f, { cache: "reload" })))).then(() => self.skipWaiting()));

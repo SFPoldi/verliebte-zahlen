@@ -47,9 +47,9 @@ und gehen verloren, wenn Website-Daten gelöscht werden.
 Android (Chrome): Menü, "App installieren". iOS (Safari): Teilen, "Zum Home-Bildschirm". Nur im eigenen Fenster, nicht eingebettet.
 
 ## Updates
-Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v3`) hochzählen.
+Nach Änderungen die Cache-Version in `sw.js` (`verliebte-zahlen-v4`) hochzählen.
 
 ## Design
 Markenfarben: Gold `#FFC82B`, Blau `#0B567B`, Creme `#FBFAF1`.
-Schrift: Nunito (SIL Open Font License), lokal eingebunden, keine Anfrage an Google. Die Ziffern ähneln der Schulschrift (4 oben geschlossen, 1 mit Haken, 7 ohne Querstrich).
+Schrift: Baloo 2 (SIL Open Font License), lokal eingebunden, keine Anfrage an Google. Die Ziffern ähneln der Schulschrift (4 oben geschlossen, 1 mit Haken, 7 ohne Querstrich).
 Logo der Mathe-Flüsterin in `img/` (`logo.png` vollständig, `logo-kopf.png` ohne Schriftzug für die Kopfzeile).
